@@ -280,8 +280,14 @@ class SSHConnector(object):
         :param li: iptables-save output
         :type li: list.
         """
-        pass
-        #TODO: implement _extract_iptables_save_nat
+        nat = []
+        for i in range(len(li)):
+            if li[i].startswith('*nat'):
+                for j in range(i+1, len(li)):
+                    if li[j].startswith('*'):
+                        break
+                    nat.append(li[j])
+        return nat
 
     def parse_iptables_save(self, li, hostname=None):
         """Parse iptables-save output and returns a dict:
